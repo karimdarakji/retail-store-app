@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "507203607709",
+    "project_id": "retail-app-466b5",
+    "storage_bucket": "retail-app-466b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507203607709:android:41764ba66b67673b210874",
+        "android_client_info": {
+          "package_name": "com.secapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507203607709-ejmimn071mokhcfu2g20m0n7nn89l7gg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjo0MT4w5Qsuy4j6skgGaW8_60BYB9HVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507203607709-ejmimn071mokhcfu2g20m0n7nn89l7gg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
