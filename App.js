@@ -59,7 +59,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
         {25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
-     
+    
     }
   },
   
@@ -85,15 +85,15 @@ const DashboardTabNavigator = createBottomTabNavigator({
   },
   Cart: {
     screen:CartScreen,
-    navigationOptions:{
+    navigationOptions: ({navigation}) => ({
       
       tabBarLabel:'Cart',
       tabBarIcon:({tintColor})=>(
         <Icon name="shoppingcart" color={tintColor} size={25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
-      //headerShown: false,
-    }
+      header: null,
+    }),
   },
   Profile: {
     screen:ProfileScreen,
@@ -105,20 +105,32 @@ const DashboardTabNavigator = createBottomTabNavigator({
       tabBarOptions: {activeTintColor:'darkorange'},
     }
   },
+  
 },
-{  
- // initialRouteName: "Home",
-  
-  
-},  
-);  
+{
+  navigationOptions: ({navigation}) => {
+    const {routeName} = navigation.state.routes
+        [navigation.state.index];
+        if(routeName == 'Cart' || routeName == 'Services'){
+    return {
+     
+      headerShown: false,
+    }
+    };
+  }
+});  
 
  
 
 const DashboardStackNavigator = createStackNavigator(
   {
-    
-  DashboardTabNavigator: DashboardTabNavigator,
+    DashboardTabNavigator: {
+      screen: DashboardTabNavigator,
+      navigationOptions: {
+    // headerShown: false,
+      }
+    },
+ // DashboardTabNavigator: DashboardTabNavigator,
   DetailScreen: {
     screen: Detail,
     navigationOptions: {
@@ -134,14 +146,15 @@ const DashboardStackNavigator = createStackNavigator(
  /* SignIn: {
     screen: SignInScreen,
     navigationOptions: {
-      headerShown: false
+      headerShown: false,
   }
   },*/
   
   
+  
 },
 /*{
-//  initialRouteName: "SignIn",
+  initialRouteName: "SignIn",
 }, */
 {
   defaultNavigationOptions: ({navigation})=> {
@@ -178,9 +191,9 @@ const DashboardStackNavigator = createStackNavigator(
 );
 
 const appswitch = createSwitchNavigator({
-  route1: SignInScreen,
-  route2: DashboardStackNavigator,
-  
+  route1: { screen: SignInScreen},
+  route2: { screen: DashboardStackNavigator},
+ // route3: DashboardStackNavigator,
 },
 {
   initialRouteName: "route1"

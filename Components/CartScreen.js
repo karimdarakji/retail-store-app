@@ -13,13 +13,14 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
-import add from './HomeScreen';
+
 var { width } = Dimensions.get("window")
 
 
 
 /* eslint-disable react/prefer-stateless-function */
-class Cart extends Component {
+export default class Cart extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +29,7 @@ class Cart extends Component {
       total: 0,
     };
   }
-
+ 
   componentDidMount() {
     this.getProductsInCart();
   }
@@ -151,18 +152,18 @@ class Cart extends Component {
       <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.image}} />
       <View style={{flex:1, backgroundColor:'trangraysparent', padding:10, justifyContent:"space-between"}}>
         <View>
-          <Text style={{fontWeight:"bold", fontSize:20}}>{item.name}</Text>
-          <Text>Lorem Ipsum de food</Text>
+          <Text style={{ fontSize:20, }}>{item.name}</Text>
+          
         </View>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-          <Text style={{fontWeight:'bold',color:"#33c37d",fontSize:20}}>${item.price*item.count}</Text>
+          <Text style={{fontWeight:'bold',color:"darkorange",fontSize:20, marginTop: 5}}>${item.price*item.count}</Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity onPress={()=>this.removeProduct(item)}>
-              <Icon name="ios-remove-circle" size={35} color={"#33c37d"} />
+              <Icon name="ios-remove-circle" size={35} color={"grey"} />
             </TouchableOpacity>
             <Text style={{paddingHorizontal:8, fontWeight:'bold', fontSize:18}}>{item.count}</Text>
             <TouchableOpacity onPress={()=>this.addToCart(item)}>
-              <Icon name="ios-add-circle" size={35} color={"#33c37d"} />
+              <Icon name="ios-add-circle" size={35} color={"grey"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -209,8 +210,13 @@ class Cart extends Component {
     }
 
     return (
-      <View >
-        <StatusBar  />
+      <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{height:50,width:width, backgroundColor:"darkorange",alignItems: 'center', justifyContent: 'center'}} >
+      <Text style={{fontSize:15,fontWeight:"bold",color:"white",}}>Shopping Cart</Text>
+      </View>
+      <View style={{height:10}} />
+      <View style={{flex:1}}>
+        
        
            <FlatList
             data={this.state.data}
@@ -223,11 +229,12 @@ class Cart extends Component {
          <Text>Your Cart is Empty</Text>
         
       </View>
+      </View>
     );
   }
 }
 
-export default Cart;
+
 const styles = StyleSheet.create({
   imageFood:{
     width:100,

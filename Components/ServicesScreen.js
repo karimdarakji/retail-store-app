@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';  
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 //import Camera from 'react-native-camera';
+var { width } = Dimensions.get("window")
 class ServicesScreen extends Component{
     constructor(props){
         super(props);
@@ -27,7 +28,7 @@ class ServicesScreen extends Component{
       if(item.icon == 'barcode'){
         return(
           <TouchableOpacity style={styles.item} onPress={()=>this.props.navigation.navigate('BarcodeScreen')}>
-              <Icon name="barcode" size={45}
+              <Icon name="barcode" size={45} color="darkorange"
               />
               <Text numberOfLines={1} style={styles.name}>Barcode Scanner</Text>
               
@@ -39,7 +40,7 @@ class ServicesScreen extends Component{
         return(
          
           <TouchableOpacity style={styles.item} onPress={this.createTwoButtonAlert}>
-              <Icon name={item.icon} size={45}
+              <Icon name={item.icon} size={45} color="darkorange"
               />
               <Text numberOfLines={1} style={styles.name}>{item.name}</Text>
               
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
+      width: width,
       //alignItems: 'center',
       //justifyContent: 'center',
     },
@@ -102,15 +104,17 @@ const styles = StyleSheet.create({
         backgroundColor:'white'
       },
       item: {
-          marginLeft: 20,
+         // marginLeft: 20,
+         width: width/3,
           marginTop: 20,
         flex:1,
         alignItems:'center'
       },
       name: {
+        
           marginTop: 15,
-        color:'green',
-        fontWeight:'bold'
+        color:'black',
+        //fontWeight:'bold'
       },
       
   });

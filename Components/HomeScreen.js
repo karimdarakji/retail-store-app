@@ -6,7 +6,28 @@ import firebase from 'firebase';
 
 var {height, width } = Dimensions.get('window');
 var i;
+var dataCat = [{
+  id: 1,
+  name: 'Bakery',
+  image: require('../img/bakery.png'),
 
+},
+{
+  id: 2,
+  name: 'Beverages',
+  image: require('../img/water.png'),
+},
+{
+  id: 3,
+  name: 'Eggs',
+  image: require('../img/eggs.png'),
+},
+{
+  id: 4,
+  name: 'Frozen',
+  image: require('../img/frozen.png'),
+},
+];
 
  export default class HomeScreen extends Component{
   _isMounted = false;
@@ -16,23 +37,10 @@ var i;
       //data: data,
       Loading: true,
       data: [],
-      
+      dataCat: dataCat,
 }
  }
-/*_rating(item){
-  let rating = [];
-  for(i=0;i<item;i++){
-    rating.push(
-      <Image 
-        source={require("../img/star.png")}
-        style={{width:15, height:15, marginRight:3}}
-        resizeMode="cover"
-      />
-    )
-  }
-  return rating;
-}
-*/
+
 
 renderItem = ({item}) => {
   return(
@@ -89,120 +97,30 @@ componentWillUnmount() {
                 <ScrollView
                 >
                   <View style={{alignItems:'center'}}>
-                <Image source = {require('../img/charcutier.png')} style={{resizeMode:'contain',height:180,width:350, borderRadius: 20  }} />
+                <Image source = {require('../img/charcutier.png')} style={{resizeMode:'contain',height:180,width:width, }} />
                 </View>
                 <Text style={{ fontSize: 24, fontWeight: '700', paddingHorizontal: 20, marginTop: 15}}>
                   Shop by Category
                   </Text>
-                  <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{width:720,height:160}}
-                  decelerationRate="fast"
-                  pagingEnabled
-                  >
-                    
-        <TouchableOpacity onPress={()=>{}} style={styles.button}>
-          
-        <View style={{flexDirection:'row', width:'100%', marginTop:'5%'}}>
-            <View style={{alignItems:'center',  paddingRight:'5%', paddingBottom:'2%'}}>
-          
-            <Image
-     source={require('../img/bakery.png')}
-     style={styles.ImageIconStyle}
-     />
-    <Text>Bakery</Text>
-          </View>
-          </View>
-          </TouchableOpacity>
-          
-          <TouchableOpacity onPress={()=>{}} style={styles.button}>
-          
-        <View style={{flexDirection:'row', width:'100%', marginTop:'5%'}}>
-            <View style={{alignItems:'center',  paddingRight:'5%', paddingBottom:'2%'}}>
-          
-            <Image
-     source={require('../img/water.png')}
-     style={styles.ImageIconStyle}
-     />
-    <Text>Water</Text>
-          </View>
-          </View>
-          </TouchableOpacity>
-
-
-          <TouchableOpacity onPress={()=>{}} style={styles.button}>
-          
-        <View style={{flexDirection:'row', width:'100%', marginTop:'5%'}}>
-            <View style={{alignItems:'center',  paddingRight:'5%', paddingBottom:'2%'}}>
-          
-            <Image
-     source={require('../img/eggs.png')}
-     style={styles.ImageIconStyle}
-     />
-    <Text>Eggs</Text>
-          </View>
-          </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>{}} style={styles.button}>
-          
-        <View style={{flexDirection:'row', width:'100%', marginTop:'5%'}}>
-            <View style={{alignItems:'center',  paddingRight:'5%', paddingBottom:'2%'}}>
-          
-            <Image
-     source={require('../img/frozen.png')}
-     style={styles.ImageIconStyle}
-     />
-    <Text>Frozen</Text>
-          </View>
-          </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>{}} style={styles.button}>
-          
-        <View style={{flexDirection:'row', width:'100%', marginTop:'5%'}}>
-            <View style={{alignItems:'center',  paddingRight:'5%', paddingBottom:'2%'}}>
-          
-            <Image
-     source={require('../img/fruits.png')}
-     style={styles.ImageIconStyle}
-     />
-    <Text>Fruits</Text>
-          </View>
-          </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>{}} style={styles.button}>
-          
-        <View style={{flexDirection:'row', width:'100%', marginTop:'5%'}}>
-            <View style={{alignItems:'center',  paddingRight:'5%', paddingBottom:'2%'}}>
-          
-            <Image
-     source={require('../img/health.png')}
-     style={styles.ImageIconStyle}
-     />
-    <Text>Health</Text>
-          </View>
-          </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>{}} style={styles.button}>
-          
-        <View style={{flexDirection:'row', width:'100%', marginTop:'5%'}}>
-            <View style={{alignItems:'center',  paddingRight:'5%', paddingBottom:'2%'}}>
-          
-            <Image
-     source={require('../img/bakery.png')}
-     style={styles.ImageIconStyle}
-     />
-    <Text>Bakery</Text>
-          </View>
-          </View>
-          </TouchableOpacity>
-          
-                  </ScrollView>
-          
+                  <FlatList
+                  horizontal data={this.state.dataCat}
+                 // numColumns={4}
+                 showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item, index)=>index.toString()}
+                  renderItem={({ item }) =>{      
+                    return (
+                      <View style={{paddingTop: 10}}
+                      >
+                      <TouchableOpacity onPress={()=>{}}>
+                      <Image source={item.image} style={styles.ImageIconStyle} />
+                      
+                        <Text style={{textAlign: 'center'}}>{item.name}</Text>
+                      
+                      </TouchableOpacity>
+                      </View>
+                    )}}
+                
+          />
                <Text style={{fontSize: 20, paddingHorizontal: 20, marginTop: 20, fontWeight:"bold"}}>Featured items</Text>   
                
                <FlatList
@@ -236,7 +154,6 @@ componentWillUnmount() {
       } 
   }
     
-  const add = new HomeScreen();
 
 
 
@@ -257,6 +174,7 @@ const styles = StyleSheet.create({
       height: 80,
       width: 80,
       resizeMode: 'stretch',
+      borderRadius: 80
     },
     button: {
       marginTop: 20,
