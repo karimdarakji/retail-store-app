@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions,Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import firebase from 'firebase';
-
+//import firebase from 'firebase';
+import firebase from '../database/firebase'
 var {height, width } = Dimensions.get('window');
 var i;
 var dataCat = [{
@@ -75,8 +75,8 @@ renderItem = ({item}) => {
 
 componentDidMount() {
   this._isMounted = true;
-  var config = {
-    //apiKey: "**********",
+  /*var config = {
+    apiKey: "AIzaSyDjo0MT4w5Qsuy4j6skgGaW8_60BYB9HVU",
    // authDomain: "**********.firebaseapp.com",
     databaseURL: "https://retail-app-466b5-default-rtdb.firebaseio.com",
     projectId: "retail-app-466b5",
@@ -85,7 +85,7 @@ componentDidMount() {
   };
   if (!firebase.apps.length) {
     firebase.initializeApp(config);
- }
+ }*/
   // firebase.initializeApp(config);   
   firebase.database().ref('data').on('value', (snapshot) => {
     if (this._isMounted) {
@@ -98,11 +98,10 @@ componentWillUnmount() {
 }
     render(){
         return (
-          //  <View style={styles.container}>
+          
            <View style={{ 
              flex: 1, 
              backgroundColor: 'white', 
-            // paddingTop: 10
              }}>
                 
                 <ScrollView>
@@ -116,7 +115,6 @@ componentWillUnmount() {
                   </Text>
                   <FlatList
                   horizontal data={this.state.dataCat}
-                 // numColumns={4}
                  showsHorizontalScrollIndicator={false}
                   keyExtractor={(item, index)=>index.toString()}
                   renderItem={({ item }) =>{      
@@ -136,21 +134,14 @@ componentWillUnmount() {
                <Text style={{fontSize: 20, paddingHorizontal: 20, marginTop: 20, fontWeight:"bold"}}>Featured items</Text>   
                
                <FlatList
-              //horizontal={true}
-              
+              //horizontal={true}     
               data={this.state.data}
               numColumns={2}
               renderItem={this.renderItem}
               keyExtractor={(item, index)=>index.toString()}
-              
             />
-
           </ScrollView>
-          
             </View>
-            
-       
-        
         );
     }
     addToCart({ id, image, name, price, quantity, rating }) {
@@ -180,18 +171,10 @@ componentWillUnmount() {
 
 const styles = StyleSheet.create({
     container: {
-     // flex: 1,
-     // backgroundColor: '#fff',
      backgroundColor: 'whitesmoke',
-    //  marginVertical: 20,
-      //alignItems: 'center',
-      //justifyContent: 'center',
     },
     ImageIconStyle: {
-    
-      //padding: 10,
       margin: 5,
-     
       height: 80,
       width: 80,
       resizeMode: 'stretch',
@@ -212,19 +195,6 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.35,
       
     },
-   /* divFood:{
-      width:(width/2)-20,
-      padding:10,
-      borderRadius:10,
-      marginTop:55,
-      marginBottom:5,
-      marginLeft:10,
-      alignItems:'center',
-      elevation:8,
-      shadowOpacity:0.3,
-      shadowRadius:50,
-      backgroundColor:'white',
-    }, */
     divFood:{
       width:(width/2)-20,
       padding:10,
@@ -242,8 +212,6 @@ const styles = StyleSheet.create({
       width:100,
       height:100,
       backgroundColor:'transparent',
-      //position:'absolute',
-      //top:-45
     },
     rating: {
       marginTop:5,

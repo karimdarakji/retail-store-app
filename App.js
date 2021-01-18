@@ -22,6 +22,7 @@ import BarcodeScanner from './Components/BarcodeScanner';
 import { SearchBar } from 'react-native-elements';
 import SplashScreen from 'react-native-splash-screen';
 import SignInScreen from './Components/SignInScreen';
+import Signup from './Components/Signup';
 var { width } = Dimensions.get("window")
 class App extends Component {
   componentDidMount() {
@@ -143,12 +144,19 @@ const DashboardStackNavigator = createStackNavigator(
       headerShown: false
   }
   },
- /* SignIn: {
+  Signup: {
+    screen: Signup,
+    navigationOptions: {
+      headerShown: false
+    }
+    
+  },
+  SignIn: {
     screen: SignInScreen,
     navigationOptions: {
       headerShown: false,
   }
-  },*/
+  },
   
   
   

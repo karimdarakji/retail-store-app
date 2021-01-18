@@ -8,24 +8,71 @@ import {
     StyleSheet ,
     StatusBar,
     Alert,
-    Button
+    ActivityIndicator
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import { createStackNavigator } from 'react-navigation';
-//import { useTheme } from 'react-native-paper';
-
-import { AuthContext } from './context';
-
-import Users from '../model/users';
 import { ScrollView } from 'react-native-gesture-handler';
+import firebase from '../database/firebase';
 
-class SignInScreen extends Component{
+/*firebaseConfig = {
+    apiKey: "AIzaSyDjo0MT4w5Qsuy4j6skgGaW8_60BYB9HVU",
+  // databaseURL: "https://retail-app-466b5-default-rtdb.firebaseio.com",
+    projectId: "retail-app-466b5",
+};
+
+firebase.initializeApp(firebaseConfig); */
+export default class SignInScreen extends Component{
+    constructor(){
+        super();
+        this.state = {
+            email: '',
+            password: '',
+            isLoading: false
+        }
+    }
+    updateInputVal = (val, prop) => {
+        const state = this.state;
+        state[prop] = val;
+        this.setState(state);
+      }
+      userLogin = () => {
+        if(this.state.email === '' && this.state.password === '') {
+          Alert.alert('Enter details to signin!')
+        }
+         else {
+          this.setState({
+            isLoading: true,
+          })
+          firebase
+          .auth()
+          .signInWithEmailAndPassword(this.state.email, this.state.password)
+          .then((res) => {
+            console.log(res)
+            console.log('User logged-in successfully!')
+            this.setState({
+              isLoading: false,
+              email: '', 
+              password: ''
+            })
+            this.props.navigation.navigate('Home')
+          })
+          //.catch(error => this.setState({ errorMessage: error.message }))
+          .catch((error) =>  { this.setState({isLoading: false}), Alert.alert(error.message)});
+         // this.props.navigation.navigate('SignIn')
+        }
+      }
 render(){
 
-
+if(this.state.isLoading){
+    return(
+        <View style={styles.preloader}>
+          <ActivityIndicator size="large" color="#9E9E9E"/>
+        </View>
+      )
+    } 
    
    // const { colors } = useTheme();
 
@@ -56,10 +103,12 @@ render(){
                 <TextInput 
                     placeholder="Your Username"
                     placeholderTextColor="#666666"
-                    style={[styles.textInput, {
+                    style={styles.textInput }
                        // color: /*colors.text*/"orange"
-                    }]}
-                    autoCapitalize="none"
+                       value={this.state.email}
+          onChangeText={(val) => this.updateInputVal(val, 'email')}
+                    
+                    //autoCapitalize="none"
                 />
                 
               <Text /*<Animatable.View
@@ -93,12 +142,14 @@ render(){
                 <TextInput 
                     placeholder="Your Password"
                     placeholderTextColor="#666666"
+                    value={this.state.password}
+                    maxLength={15}
                    // secureTextEntry={data.secureTextEntry ? true : false}
                     style={[styles.textInput, {
                      //   color: /*colors.text*/"orange"
                     }]}
-                    autoCapitalize="none"
-                    //onChangeText={(val) => handlePasswordChange(val)}
+                    //autoCapitalize="none"
+                    onChangeText={(val) => this.updateInputVal(val, 'password')}
                 />
                 <TouchableOpacity
                    // onPress={updateSecureTextEntry}
@@ -130,7 +181,8 @@ render(){
             </TouchableOpacity>
             <View style={styles.button}>
                 <TouchableOpacity
-                     onPress={() => this.props.navigation.navigate('Home')}
+                   //  onPress={() => this.props.navigation.navigate('Home')}
+                   onPress={() => this.userLogin()}
                     style={styles.signIn}
                     //onPress={() => {loginHandle( data.username, data.password )}}
                 >
@@ -145,7 +197,7 @@ render(){
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  // onPress={() => this.props.navigation.navigate('Home')}
+                   onPress={() => this.props.navigation.navigate('Signup')}
                     style={[styles.signIn, {
                         borderColor: '#009387',
                         borderWidth: 1,
@@ -164,7 +216,7 @@ render(){
                 }
             }
 
-export default SignInScreen;
+
 
 const styles = StyleSheet.create({
     container: {
