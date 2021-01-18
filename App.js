@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {StyleSheet,View,Text,Button,Image,Item,Input} from 'react-native';
+import {StyleSheet,View,Text,Button,Image,Item,Input,Dimensions} from 'react-native';
 import {  createAppContainer,createSwitchNavigator } from 'react-navigation';  
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';  
@@ -22,7 +22,7 @@ import BarcodeScanner from './Components/BarcodeScanner';
 import { SearchBar } from 'react-native-elements';
 import SplashScreen from 'react-native-splash-screen';
 import SignInScreen from './Components/SignInScreen';
-
+var { width } = Dimensions.get("window")
 class App extends Component {
   componentDidMount() {
     SplashScreen.hide();
@@ -164,7 +164,7 @@ const DashboardStackNavigator = createStackNavigator(
       headerStyle: {
        
         backgroundColor: 'darkorange',
-        height: 50,
+        height: 45,
       },
       headerLeft: () => <View style={{marginLeft: 10}}><LogoTitle/></View>,
       headerRight: () => (
@@ -177,7 +177,7 @@ const DashboardStackNavigator = createStackNavigator(
         round
         searchIcon={{ size: 24 }}
         placeholder="Search..."
-        inputContainerStyle={{backgroundColor: 'white', width: 260, height: 35}}
+        inputContainerStyle={{backgroundColor: 'white', width:width-60, height: 35,}}
         
         
       />

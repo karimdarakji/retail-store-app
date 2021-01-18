@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions, } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions,Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import firebase from 'firebase';
@@ -38,6 +38,7 @@ var dataCat = [{
       Loading: true,
       data: [],
       dataCat: dataCat,
+      
 }
  }
 
@@ -45,6 +46,12 @@ var dataCat = [{
 renderItem = ({item}) => {
   return(
     <TouchableOpacity onPress={()=>this.props.navigation.navigate('DetailScreen',{imageData: item.image,priceData: item.price,nameData: item.name})} style={styles.divFood}>
+          <TouchableOpacity  style={{alignSelf:'flex-end'}}onPress={() => {if(item.fav == "heart-outline")
+          this.like(item)
+          else this.unlike(item)
+          }}>
+            <Icon name={item.fav} size={25} color="red"  />
+          </TouchableOpacity>
           <Image
             style={styles.imageFood}
             resizeMode="contain"
@@ -91,16 +98,21 @@ componentWillUnmount() {
 }
     render(){
         return (
-           // <View style={styles.container}>
-           <View style={{ flex: 1, backgroundColor: 'white', paddingTop: 20}}>
+          //  <View style={styles.container}>
+           <View style={{ 
+             flex: 1, 
+             backgroundColor: 'white', 
+            // paddingTop: 10
+             }}>
                 
-                <ScrollView
-                >
-                  <View style={{alignItems:'center'}}>
+                <ScrollView>
+                  
+                  <View style={{alignItems:'center', paddingTop: 10}}>
                 <Image source = {require('../img/charcutier.png')} style={{resizeMode:'contain',height:180,width:width, }} />
                 </View>
-                <Text style={{ fontSize: 24, fontWeight: '700', paddingHorizontal: 20, marginTop: 15}}>
-                  Shop by Category
+                <View style={{marginTop:10, borderTopWidth: 1, borderColor:'lightgrey'}}>
+                <Text style={{ fontSize: 20, fontWeight: 'normal', paddingHorizontal: 20, marginTop: 15, textAlign: 'center', color:'black'}}>
+                  SHOP BY CATEGORY
                   </Text>
                   <FlatList
                   horizontal data={this.state.dataCat}
@@ -118,9 +130,9 @@ componentWillUnmount() {
                       
                       </TouchableOpacity>
                       </View>
-                    )}}
+                    )}}/>
                 
-          />
+           </View>
                <Text style={{fontSize: 20, paddingHorizontal: 20, marginTop: 20, fontWeight:"bold"}}>Featured items</Text>   
                
                <FlatList
@@ -130,11 +142,13 @@ componentWillUnmount() {
               numColumns={2}
               renderItem={this.renderItem}
               keyExtractor={(item, index)=>index.toString()}
+              
             />
 
           </ScrollView>
           
             </View>
+            
        
         
         );
@@ -152,6 +166,12 @@ componentWillUnmount() {
         );
        
       } 
+      like(item){
+        firebase.database().ref(`data/${item.id-1}`).update({fav: `heart`});
+      }
+      unlike(item){
+        firebase.database().ref(`data/${item.id-1}`).update({fav: `heart-outline`});
+      }
   }
     
 
@@ -160,9 +180,10 @@ componentWillUnmount() {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      marginVertical: 20,
+     // flex: 1,
+     // backgroundColor: '#fff',
+     backgroundColor: 'whitesmoke',
+    //  marginVertical: 20,
       //alignItems: 'center',
       //justifyContent: 'center',
     },
