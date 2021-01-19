@@ -85,7 +85,7 @@ export default class Cart extends Component {
 
           this.setState(
             () => ({ data, loading: false }),
-            //() => this.calculateTotal(),
+           // () => this.calculateTotal(),
           );
         });
    
@@ -116,16 +116,13 @@ export default class Cart extends Component {
  /* calculateTotal() {
     let totalItems = 0;
     const { data } = this.state;
-    const user = firebase.auth().currentUser;
+   // const user = firebase.auth().currentUser;
 
-    const total = data.reduce((sum, item) => {
-      totalItems += 1;
-      return sum + (item.price * item.count);
-    }, 0).toFixed(2);
+    total = data.item.price * data.item.count;
     
     this.setState({ total });
 
-    firebase.database().ref(`cart/${user.uid}`)
+    firebase.database().ref(`cart/`)
       .update({ meta: { total, totalItems } })
       .catch(error => this.showAlert('Firebase Error', error.message));
   }
@@ -211,7 +208,7 @@ export default class Cart extends Component {
 
     return (
       <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
-      <View style={{height:50,width:width, backgroundColor:"darkorange",alignItems: 'center', justifyContent: 'center'}} >
+      <View style={{height:45,width:width, backgroundColor:"darkorange",alignItems: 'center', justifyContent: 'center'}} >
       <Text style={{fontSize:15,fontWeight:"bold",color:"white",}}>Shopping Cart</Text>
       </View>
       <View style={{height:10}} />
@@ -221,7 +218,7 @@ export default class Cart extends Component {
            <FlatList
             data={this.state.data}
             renderItem={({ item }) => this.renderItem(item)}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.id}
           //  ListHeaderComponent={() => this.renderHeader()}
           //  ListFooterComponent={() => this.renderFooter()}
            // ItemSeparatorComponent={this.renderSeparator}

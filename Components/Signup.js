@@ -1,11 +1,12 @@
 // components/signup.js
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert, ActivityIndicator,ToastAndroid,BackHandler } from 'react-native';
+import { StyleSheet, Text, View, TextInput, StatusBar, Alert, ActivityIndicator,ToastAndroid,BackHandler,Dimensions } from 'react-native';
 import firebase from 'firebase';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
+var {height, width } = Dimensions.get('window');
 export default class Signup extends Component {
   
   constructor() {
@@ -49,16 +50,16 @@ handleBackButton() {
         res.user.updateProfile({
           displayName: this.state.displayName
         })
-        console.log('User registered successfully!')
+        Alert.alert('User registered successfully!')
         this.setState({
           isLoading: false,
           displayName: '',
           email: '', 
           password: ''
         })
-        this.props.navigation.navigate('Login')
+        this.props.navigation.navigate('SignIn')
       })
-      .catch(error => this.setState({ errorMessage: error.message }))      
+      .catch(error => this.setState({ errorMessage: Alert.alert(error.message), isLoading: false }))      
     }
   }
 
@@ -72,40 +73,77 @@ handleBackButton() {
     }    
     return (
       <View style={styles.container}>  
+       <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
+      <View style={styles.header}></View>
+      <Animatable.View 
+            animation="fadeInUpBig"
+            style={[styles.footer, {
+              //  backgroundColor: /*colors.background*/ "orange"
+            }]}
+        >
+          <ScrollView>
+          <Text style={[styles.text_footer, {
+                color: "black"
+            }]}>Name</Text>
+            <View style={styles.action}>
         <TextInput
-          style={styles.inputStyle}
-          placeholder="Name"
+          style={styles.textInput}
+          placeholder="Enter your Name"
           value={this.state.displayName}
           onChangeText={(val) => this.updateInputVal(val, 'displayName')}
-        />      
+        /> 
+             </View>
+             <Text style={[styles.text_footer, {
+                color: "black",marginTop: 5
+            }]}>Email</Text>
+            <View style={styles.action}>
         <TextInput
-          style={styles.inputStyle}
-          placeholder="Email"
+          style={styles.textInput}
+          placeholder="Enter your Email"
           value={this.state.email}
           onChangeText={(val) => this.updateInputVal(val, 'email')}
         />
+        </View>
+        <Text style={[styles.text_footer, {
+                color: "black",marginTop: 5
+            }]}>Password</Text>
+            <View style={styles.action}>
         <TextInput
-          style={styles.inputStyle}
-          placeholder="Password"
+          style={styles.textInput}
+          placeholder="Enter your Password"
           value={this.state.password}
           onChangeText={(val) => this.updateInputVal(val, 'password')}
           maxLength={15}
           secureTextEntry={true}
         />   
-        <Button
-          color="#3740FE"
-          title="Signup"
-          onPress={() => this.registerUser()}
-        />
-
+        </View>
+        <View style={styles.button}>
+                <TouchableOpacity
+                   onPress={() => this.registerUser()}
+                    style={styles.signIn}
+                >
+                <LinearGradient
+                    //colors={['#08d4c4', '#01ab9d']}
+                    colors={['orange','darkorange']}
+                    style={styles.signIn}
+                >
+                    <Text style={[styles.textSign, {
+                        color:'#fff'
+                    }]}>Sign up</Text>
+                </LinearGradient>
+                </TouchableOpacity>
+</View>
         <TouchableOpacity
           style={styles.loginText}
           onPress={() => this.props.navigation.navigate('SignIn')}>
           <Text style={styles.loginText}>  
           Already Registered? Click here to login
         </Text>   
-    </TouchableOpacity>                       
-      </View>
+    </TouchableOpacity>   
+    </ScrollView>
+    </Animatable.View>
+    </View>                    
+      
     );
   }
 }
@@ -113,11 +151,11 @@ handleBackButton() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: 35,
-    backgroundColor: '#fff'
+   // display: "flex",
+    //flexDirection: "column",
+   // justifyContent: "center",
+   // padding: 35,
+    backgroundColor: 'darkorange'
   },
   inputStyle: {
     width: '100%',
@@ -128,7 +166,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   loginText: {
-    color: "blue",
+    color: "orange",
     marginTop: 25,
     textAlign: 'center'
   },
@@ -141,5 +179,75 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff'
-  }
+  },
+    header: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingHorizontal: 20,
+        paddingBottom: 50
+    },
+    footer: {
+      
+        flex: 4,
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        paddingHorizontal: 20,
+        paddingVertical: 30
+    },
+    text_header: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 30
+    },
+    text_footer: {
+        color: '#05375a',
+        fontSize: 18
+    },
+    action: {
+        flexDirection: 'row',
+        marginTop: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#f2f2f2',
+        //paddingBottom: 5
+    },
+    actionError: {
+        flexDirection: 'row',
+        marginTop: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#FF0000',
+        paddingBottom: 5
+    },
+    textInput: {
+        flex: 1,
+        //marginTop: Platform.OS === 'ios' ? 0 : -12,
+       //   paddingBottom: 5,
+        paddingLeft: 15,
+        color: 'black',
+        borderBottomColor: 'white',
+       // textAlign: 'center',
+        
+    },
+    errorMsg: {
+        color: '#FF0000',
+        fontSize: 14,
+    },
+    button: {
+        alignItems: 'center',
+        marginTop: 50,
+       // width: '100%'
+    },
+    signIn: {
+        width: width-50,
+      // width: width,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    textSign: {
+        fontSize: 18,
+        fontWeight: 'bold'
+    }
+  
 });

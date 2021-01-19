@@ -5,7 +5,8 @@ import {
     TouchableOpacity, 
     TextInput,
     Platform,
-    StyleSheet ,
+    StyleSheet,
+    Image ,
     StatusBar,
     Alert,
     ActivityIndicator
@@ -71,15 +72,13 @@ if(this.state.isLoading){
       )
     } 
    
-   // const { colors } = useTheme();
-
-   //const { signIn } = React.useContext(AuthContext);
 
     return (
       <View style={styles.container}>
           <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
         <View style={styles.header}>
-            <Text style={styles.text_header}>Welcome!</Text>
+            
+            <Image source={require('../img/logo20.png')} style={{alignSelf:'center', marginTop: 20, resizeMode: 'contain', height: 70}}/>
         </View>
         <Animatable.View 
             animation="fadeInUpBig"
@@ -89,13 +88,14 @@ if(this.state.isLoading){
         >
             <ScrollView>
             <Text style={[styles.text_footer, {
-              //  color: /*colors.text*/ "orange"
+                color: "black"
             }]}>Username</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
                   //  color={/*colors.text*/"orange"}
                     size={20}
+                    
                 />
                 <TextInput 
                     placeholder="Your Username"
@@ -126,8 +126,8 @@ if(this.state.isLoading){
             
 
             <Text style={[styles.text_footer, {
-               // color: /*colors.text*/"orange",
-                marginTop: 35
+                color: "black",
+                marginTop: 35,
             }]}>Password</Text>
             <View style={styles.action}>
                 <Feather 
@@ -148,6 +148,7 @@ if(this.state.isLoading){
                     secureTextEntry={this.state.secureTextEntry ? true : false}
                 />
                 <TouchableOpacity
+                style={{marginRight: 10}}
                     onPress={() => {if(this.state.secureTextEntry == true) 
                         this.setState({secureTextEntry: false})
                 else this.setState({secureTextEntry: true})
@@ -176,17 +177,16 @@ if(this.state.isLoading){
             
 
             <TouchableOpacity >
-                <Text style={{color: '#009387', marginTop:15}}>Forgot password?</Text>
+                <Text style={{color: 'darkorange', marginTop:15}}>Forgot password?</Text>
             </TouchableOpacity>
             <View style={styles.button}>
                 <TouchableOpacity
-                   //  onPress={() => this.props.navigation.navigate('Home')}
                    onPress={() => this.userLogin()}
                     style={styles.signIn}
-                    //onPress={() => {loginHandle( data.username, data.password )}}
                 >
                 <LinearGradient
-                    colors={['#08d4c4', '#01ab9d']}
+                    //colors={['#08d4c4', '#01ab9d']}
+                    colors={['orange','darkorange']}
                     style={styles.signIn}
                 >
                     <Text style={[styles.textSign, {
@@ -198,13 +198,13 @@ if(this.state.isLoading){
                 <TouchableOpacity
                    onPress={() => this.props.navigation.navigate('Signup')}
                     style={[styles.signIn, {
-                        borderColor: '#009387',
+                        borderColor: 'darkorange',
                         borderWidth: 1,
                         marginTop: 15
                     }]}
                 >
                     <Text style={[styles.textSign, {
-                        color: '#009387'
+                        color: 'darkorange'
                     }]}>Sign Up</Text>
                 </TouchableOpacity>
             </View>
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     },
     action: {
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: 20,
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5
@@ -261,9 +261,11 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingLeft: 10,
-        color: '#05375a',
+        //marginTop: Platform.OS === 'ios' ? 0 : -12,
+
+        paddingLeft: 15,
+        color: 'black',
+        borderBottomColor: 'white'
     },
     errorMsg: {
         color: '#FF0000',
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
     },
     textSign: {
         fontSize: 18,
