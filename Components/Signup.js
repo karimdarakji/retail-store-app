@@ -101,7 +101,7 @@ handleBackButton() {
         <TouchableOpacity
           style={styles.loginText}
           onPress={() => this.props.navigation.navigate('SignIn')}>
-          <Text>  
+          <Text style={styles.loginText}>  
           Already Registered? Click here to login
         </Text>   
     </TouchableOpacity>                       
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   loginText: {
-    color: '#3740FE',
+    color: "blue",
     marginTop: 25,
     textAlign: 'center'
   },

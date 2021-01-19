@@ -17,20 +17,16 @@ import Feather from 'react-native-vector-icons/Feather';
 import { ScrollView } from 'react-native-gesture-handler';
 import firebase from '../database/firebase';
 
-/*firebaseConfig = {
-    apiKey: "AIzaSyDjo0MT4w5Qsuy4j6skgGaW8_60BYB9HVU",
-  // databaseURL: "https://retail-app-466b5-default-rtdb.firebaseio.com",
-    projectId: "retail-app-466b5",
-};
 
-firebase.initializeApp(firebaseConfig); */
 export default class SignInScreen extends Component{
     constructor(){
         super();
         this.state = {
             email: '',
             password: '',
-            isLoading: false
+            isLoading: false,
+            isValidPassword: true,
+            secureTextEntry: true,
         }
     }
     updateInputVal = (val, prop) => {
@@ -55,12 +51,13 @@ export default class SignInScreen extends Component{
             this.setState({
               isLoading: false,
               email: '', 
-              password: ''
+              password: '',
+              isValidPassword: true
             })
             this.props.navigation.navigate('Home')
           })
           //.catch(error => this.setState({ errorMessage: error.message }))
-          .catch((error) =>  { this.setState({isLoading: false}), Alert.alert(error.message)});
+          .catch((error) =>  { this.setState({isLoading: false, isValidPassword: false,}), Alert.alert(error.message)});
          // this.props.navigation.navigate('SignIn')
         }
       }
@@ -105,10 +102,9 @@ if(this.state.isLoading){
                     placeholderTextColor="#666666"
                     style={styles.textInput }
                        // color: /*colors.text*/"orange"
-                       value={this.state.email}
-          onChangeText={(val) => this.updateInputVal(val, 'email')}
-                    
-                    //autoCapitalize="none"
+                    autoCapitalize="none"
+                    value={this.state.email}
+                    onChangeText={(val) => this.updateInputVal(val, 'email')}
                 />
                 
               <Text /*<Animatable.View
@@ -144,36 +140,39 @@ if(this.state.isLoading){
                     placeholderTextColor="#666666"
                     value={this.state.password}
                     maxLength={15}
-                   // secureTextEntry={data.secureTextEntry ? true : false}
+                    autoCapitalize="none"
                     style={[styles.textInput, {
                      //   color: /*colors.text*/"orange"
                     }]}
-                    //autoCapitalize="none"
                     onChangeText={(val) => this.updateInputVal(val, 'password')}
+                    secureTextEntry={this.state.secureTextEntry ? true : false}
                 />
                 <TouchableOpacity
-                   // onPress={updateSecureTextEntry}
+                    onPress={() => {if(this.state.secureTextEntry == true) 
+                        this.setState({secureTextEntry: false})
+                else this.setState({secureTextEntry: true})
+                }}
                 >
-                  
+                  { this.state.secureTextEntry ?
                     <Feather 
                         name="eye-off"
                         color="grey"
                         size={20}
                     />
-                    
+                    :
                     <Feather 
                         name="eye"
                         color="grey"
                         size={20}
                     />
-                    
+                  }
                 </TouchableOpacity>
             </View>
-            
+            {this.state.isValidPassword ? null :
             <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+            <Text style={styles.errorMsg}>Wrong username or password.</Text>
             </Animatable.View>
-            
+}
             
 
             <TouchableOpacity >
