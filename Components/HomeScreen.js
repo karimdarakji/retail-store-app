@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions,Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-//import firebase from 'firebase';
 import firebase from '../database/firebase'
+
+
 var {height, width } = Dimensions.get('window');
 var i;
 var dataCat = [{

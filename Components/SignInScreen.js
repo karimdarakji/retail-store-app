@@ -1,16 +1,5 @@
 import React, {Component} from 'react';
-import { 
-    View, 
-    Text, 
-    TouchableOpacity, 
-    TextInput,
-    Platform,
-    StyleSheet,
-    Image ,
-    StatusBar,
-    Alert,
-    ActivityIndicator
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput,Platform,StyleSheet,Image ,StatusBar,Alert,ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -82,53 +71,21 @@ if(this.state.isLoading){
         </View>
         <Animatable.View 
             animation="fadeInUpBig"
-            style={[styles.footer, {
-              //  backgroundColor: /*colors.background*/ "orange"
-            }]}
-        >
+            style={[styles.footer]}>
             <ScrollView>
-            <Text style={[styles.text_footer, {
-                color: "black"
-            }]}>Username</Text>
+            <Text style={[styles.text_footer,{ color: "black"}]}>Username</Text>
             <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                  //  color={/*colors.text*/"orange"}
-                    size={20}
-                    
-                />
+                <FontAwesome name="user-o" size={20} />
                 <TextInput 
                     placeholder="Your Username"
                     placeholderTextColor="#666666"
                     style={styles.textInput }
-                       // color: /*colors.text*/"orange"
                     autoCapitalize="none"
                     value={this.state.email}
                     onChangeText={(val) => this.updateInputVal(val, 'email')}
                 />
-                
-              <Text /*<Animatable.View
-                    animation="bounceIn"
-                >
-                    <Feather 
-                        name="check-circle"
-                        color="green"
-                        size={20}
-                    />
-                </Animatable.View>*/
-            />
             </View>
-            <Text /*
-            <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
-            </Animatable.View> *//>
-            
-            
-
-            <Text style={[styles.text_footer, {
-                color: "black",
-                marginTop: 35,
-            }]}>Password</Text>
+            <Text style={[styles.text_footer, {color: "black", marginTop: 35,}]}>Password</Text>
             <View style={styles.action}>
                 <Feather 
                     name="lock"
@@ -141,9 +98,7 @@ if(this.state.isLoading){
                     value={this.state.password}
                     maxLength={15}
                     autoCapitalize="none"
-                    style={[styles.textInput, {
-                     //   color: /*colors.text*/"orange"
-                    }]}
+                    style={[styles.textInput]}
                     onChangeText={(val) => this.updateInputVal(val, 'password')}
                     secureTextEntry={this.state.secureTextEntry ? true : false}
                 />
@@ -185,13 +140,10 @@ if(this.state.isLoading){
                     style={styles.signIn}
                 >
                 <LinearGradient
-                    //colors={['#08d4c4', '#01ab9d']}
                     colors={['orange','darkorange']}
                     style={styles.signIn}
                 >
-                    <Text style={[styles.textSign, {
-                        color:'#fff'
-                    }]}>Sign In</Text>
+                    <Text style={[styles.textSign, {color:'#fff'}]}>Sign In</Text>
                 </LinearGradient>
                 </TouchableOpacity>
 
@@ -261,8 +213,6 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        //marginTop: Platform.OS === 'ios' ? 0 : -12,
-
         paddingLeft: 15,
         color: 'black',
         borderBottomColor: 'white'

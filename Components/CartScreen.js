@@ -1,36 +1,24 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Alert,
-  FlatList,
-  StatusBar,
-  TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View,Text,Image,Alert,FlatList,StatusBar,TouchableOpacity,ActivityIndicator,StyleSheet,Dimensions,} from 'react-native';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 var { width } = Dimensions.get("window")
 
 
-
-/* eslint-disable react/prefer-stateless-function */
 export default class Cart extends Component {
-  
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
       data: [],
       loading: true,
-      total: 0,
+      
     };
   }
  
   componentDidMount() {
+    this._isMounted = true;
     this.getProductsInCart();
   }
   addToCart({ id, image, name, price, quantity, rating }) {
@@ -39,11 +27,7 @@ export default class Cart extends Component {
    // if (user) {
       firebase.database().ref(`cart`)
         .push({  id, image, name, price, quantity, rating });
-      //alert(
-      //  `${name} of ${price} has been added to the cart.`,
-       // ToastAndroid.SHORT,
-       // ToastAndroid.BOTTOM,
-     // );
+      
      
     } 
 
@@ -129,38 +113,23 @@ export default class Cart extends Component {
 */
   renderItem(item) {
     return (
-     /* <View >
-        
-          <Text >{item.count}</Text>
-          <Image style={styles.imageFood} source={{ uri: item.image }}  />
-        
-        <View >
-          <Text >{item.name}</Text>
-          <Text >${item.price * item.count}</Text>
-        </View>
-        <TouchableOpacity
-          
-          onPress={() => this.removeProduct(item)}
-        >
-          <Icon size={32} name="md-close" />
-        </TouchableOpacity>
-      </View>*/
+     
       <View style={{width:width-20,margin:10,backgroundColor:'transparent', flexDirection:'row', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}}>
-      <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.image}} />
+      <Image resizeMode={"contain"} style={{width:width/4,height:width/4, borderRadius: 5}} source={{uri: item.image}} />
       <View style={{flex:1, backgroundColor:'trangraysparent', padding:10, justifyContent:"space-between"}}>
         <View>
-          <Text style={{ fontSize:20, }}>{item.name}</Text>
+          <Text style={{ fontSize:20, fontWeight:"bold"}}>{item.name}</Text>
           
         </View>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-          <Text style={{fontWeight:'bold',color:"darkorange",fontSize:20, marginTop: 5}}>${item.price*item.count}</Text>
+          <Text style={{color:"black",fontSize:20, marginTop: 10}}>${item.price*item.count}</Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity onPress={()=>this.removeProduct(item)}>
-              <Icon name="ios-remove-circle" size={35} color={"grey"} />
+              <Icon name="ios-remove-circle" size={35} color={"darkorange"} />
             </TouchableOpacity>
             <Text style={{paddingHorizontal:8, fontWeight:'bold', fontSize:18}}>{item.count}</Text>
             <TouchableOpacity onPress={()=>this.addToCart(item)}>
-              <Icon name="ios-add-circle" size={35} color={"grey"} />
+              <Icon name="ios-add-circle" size={35} color={"darkorange"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -172,31 +141,40 @@ export default class Cart extends Component {
  /* renderSeparator() {
     return <View style={styles.separator} />;
   }
+  */
   
-  renderHeader() {
-    return (
-      <View style={styles.cartItemsHeader}>
-        <Text style={styles.cartItemsImages}>Qty</Text>
-        <View style={styles.cartItemsInfo}>
-          <Text style={styles.cartItemsProducts}>Product</Text>
-          <Text style={styles.cartItemsAmounts}>Amount</Text>
-        </View>
-        <Text style={styles.cartItemsAction} />
-      </View>
-    );
-  }
   
   renderFooter() {
     return (
       <View style={styles.cartItemsFooter}>
-        <Text style={styles.cartItemsTotalText}>Total</Text>
-        <Text style={styles.cartItemsTotalAmount}>
-          ${this.state ? this.state.total : 0}
-        </Text>
+        <View style={{flexDirection:"row"}}>
+        <Text style={styles.cartItemsTotalText}>Total: </Text>
+        <Text style={{fontSize:24,textAlign:"right"}}>${this.onTotal()}</Text>
+        </View>
+        <View style={{justifyContent:"flex-end"}}>
+        <TouchableOpacity style={{backgroundColor:"darkorange",borderRadius:5,marginTop:20,}}>
+           <Text style={{textAlign:"center",color:"white",fontSize:25,fontWeight:"bold"}}>Checkout</Text>
+        </TouchableOpacity>
+        </View>
       </View>
+    
+      
     );
   }
-*/
+
+onTotal(){
+  var total = 0;
+  const car = this.state.data;
+  var i;
+  for(i=0;i<car.length;i++){
+    total = total + (car[i].price*car[i].count);
+  }
+return total;
+}
+
+componentWillUnmount() {
+  this._isMounted = false;
+}
   render() {
     if (this.state.loading) {
       return (
@@ -214,17 +192,17 @@ export default class Cart extends Component {
       <View style={{height:10}} />
       <View style={{flex:1}}>
         
-       
+       {this.onTotal()>0 ?
            <FlatList
             data={this.state.data}
             renderItem={({ item }) => this.renderItem(item)}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.id.toString()}
           //  ListHeaderComponent={() => this.renderHeader()}
-          //  ListFooterComponent={() => this.renderFooter()}
+            ListFooterComponent={() => this.renderFooter()}
            // ItemSeparatorComponent={this.renderSeparator}
           />
-         <Text>Your Cart is Empty</Text>
-        
+          : <View style={{justifyContent:"center",alignItems:"center",flex:1}}><Text>Cart is empty</Text></View>
+       }
       </View>
       </View>
     );
@@ -239,5 +217,23 @@ const styles = StyleSheet.create({
     backgroundColor:'transparent',
     //position:'absolute',
     //top:-45
+  },
+  cartItemsFooter: {
+    flex: 1,
+    marginTop:15,
+    paddingVertical: 15,
+    paddingLeft: '5%',
+    paddingRight: '15%',
+  },
+  cartItemsTotalText: {
+    fontSize: 24,
+    fontWeight:"bold",
+    color: "black",
+    //marginRight: 20,
+    textAlign:"left"
+  },
+  cartItemsTotalAmount: {
+    fontSize: 30,
+    color: "black",
   },
 });
