@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, TouchableOpacity, TextInput,Platform,StyleSheet,Image ,StatusBar,Alert,ActivityIndicator} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput,BackHandler,StyleSheet,Image ,StatusBar,Alert,ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -19,6 +19,11 @@ export default class SignInScreen extends Component{
             secureTextEntry: true,
         }
     }
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', () => {
+          BackHandler.exitApp();
+        });
+      }
     updateInputVal = (val, prop) => {
         const state = this.state;
         state[prop] = val;
@@ -44,7 +49,7 @@ export default class SignInScreen extends Component{
               password: '',
               isValidPassword: true
             })
-            this.props.navigation.navigate('Home')
+           // this.props.navigation.navigate('Home')
           })
           //.catch(error => this.setState({ errorMessage: error.message }))
           .catch((error) =>  { this.setState({isLoading: false, isValidPassword: false,}), Alert.alert(error.message)});

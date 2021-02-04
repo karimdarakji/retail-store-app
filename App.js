@@ -23,15 +23,37 @@ import { SearchBar } from 'react-native-elements';
 import SplashScreen from 'react-native-splash-screen';
 import SignInScreen from './Components/SignInScreen';
 import Signup from './Components/Signup';
+import firebase from './database/firebase';
 var { width } = Dimensions.get("window")
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      
+      loggedIn: null
+      
+    };
+  }
+ // state = { loggedIn: null };
   componentDidMount() {
     SplashScreen.hide();
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ loggedIn: true })
+      } else {
+        this.setState({ loggedIn: false })
+      }
+    })
+  }
+  componentWillUnmount(){
+    this.state.loggedIn = null;
   }
   
   render() {
+    if(this.state.loggedIn == true)
     return <AppContainer />
-    
+    else return <SignInScreen/>
     
   }
 }
@@ -125,7 +147,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
 
 const DashboardStackNavigator = createStackNavigator(
   {
-    DashboardTabNavigator: {
+  o: {
       screen: DashboardTabNavigator,
       navigationOptions: {
     // headerShown: false,
@@ -175,9 +197,10 @@ const DashboardStackNavigator = createStackNavigator(
         height: 45,
       },
       headerLeft: () => <View style={{marginLeft: 10}}><LogoTitle/></View>,
-      headerRight: () => (
+      headerTitle: () => (
       
         //<Icon name="search1" color='white' size={25} style={{marginRight: 10}}/>
+        
         <SearchBar
         inputStyle={{backgroundColor: 'white', marginTop: 7}}
     containerStyle={{backgroundColor: 'transparent', borderBottomColor:'transparent', borderTopColor: 'transparent', }}
@@ -185,10 +208,11 @@ const DashboardStackNavigator = createStackNavigator(
         round
         searchIcon={{ size: 24 }}
         placeholder="Search..."
-        inputContainerStyle={{backgroundColor: 'white', width:width-60, height: 35,}}
+        inputContainerStyle={{backgroundColor: 'white', height: 35,}}
         
         
       />
+      
       ), 
       
           
@@ -198,7 +222,7 @@ const DashboardStackNavigator = createStackNavigator(
 
 );
 
-const appswitch = createSwitchNavigator({
+/*const appswitch = createSwitchNavigator({
   route1: { screen: SignInScreen},
   route2: { screen: DashboardStackNavigator},
  // route3: DashboardStackNavigator,
@@ -206,6 +230,7 @@ const appswitch = createSwitchNavigator({
 {
   initialRouteName: "route1"
 })
-const AppContainer = createAppContainer(appswitch);
+const AppContainer = createAppContainer(appswitch);*/
+const AppContainer = createAppContainer(DashboardStackNavigator);
 //export default createAppContainer(AppSwitchNavigator);  
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import {View,Text,Image,Alert,FlatList,StatusBar,TouchableOpacity,ActivityIndicator,StyleSheet,Dimensions,} from 'react-native';
-import firebase from 'firebase';
+import firebase from '../database/firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 var { width } = Dimensions.get("window")
 
 
 export default class Cart extends Component {
-  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -18,24 +18,30 @@ export default class Cart extends Component {
   }
  
   componentDidMount() {
-    this._isMounted = true;
-    this.getProductsInCart();
-  }
-  addToCart({ id, image, name, price, quantity, rating }) {
-    //const user = firebase.auth().currentUser;
+    
+   // const user = firebase.auth().currentUser;
 
    // if (user) {
-      firebase.database().ref(`cart`)
+    this.getProductsInCart();
+ // }
+}
+  addToCart({ id, image, name, price, quantity, rating }) {
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+      firebase.database().ref(`cart/${user.displayName}`)
         .push({  id, image, name, price, quantity, rating });
       
      
     } 
+  }
 
   getProductsInCart() {
     
+    const user = firebase.auth().currentUser;
 
-    
-      firebase.database().ref(`cart`)
+    if(user){
+      firebase.database().ref(`cart/${user.displayName}`)
         .on('value', (snapshot) => {
           let dupIndex = 0;
           const data = [];
@@ -73,16 +79,18 @@ export default class Cart extends Component {
           );
         });
    
-      
+    }
   }
   
   removeProduct(item) {
     
+    const user = firebase.auth().currentUser;
 
+    if (user) {
     
-      firebase.database().ref(`cart/${item.key}`).remove();
-    
-    
+     // firebase.database().ref(`cart/${item.key}`).remove();
+     firebase.database().ref(`cart/${user.displayName}/${item.key}`).remove();
+    }
   }
 
   showAlert(title, message) {
@@ -172,9 +180,6 @@ onTotal(){
 return total;
 }
 
-componentWillUnmount() {
-  this._isMounted = false;
-}
   render() {
     if (this.state.loading) {
       return (
@@ -186,11 +191,11 @@ componentWillUnmount() {
 
     return (
       <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
-      <View style={{height:45,width:width, backgroundColor:"darkorange",alignItems: 'center', justifyContent: 'center'}} >
-      <Text style={{fontSize:15,fontWeight:"bold",color:"white",}}>Shopping Cart</Text>
+      <View style={{height:45,width:width,alignItems: 'flex-start', justifyContent: 'center', marginLeft:30,borderBottomWidth:1,borderBottomColor:'lightgrey',marginTop:10}} >
+      <Text style={{fontSize:25,fontWeight:"bold",color:"black",}}>My Cart</Text>
       </View>
       <View style={{height:10}} />
-      <View style={{flex:1}}>
+      <View style={{flex:1,marginTop:10}}>
         
        {this.onTotal()>0 ?
            <FlatList

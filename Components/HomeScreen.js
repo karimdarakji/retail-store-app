@@ -145,10 +145,10 @@ componentWillUnmount() {
         );
     }
     addToCart({ id, image, name, price, quantity, rating }) {
-      //const user = firebase.auth().currentUser;
+      const user = firebase.auth().currentUser;
   
-     // if (user) {
-        firebase.database().ref(`cart`)
+      if (user) {
+        firebase.database().ref(`cart/${user.displayName}/`)
           .push({  id, image, name, price, quantity, rating });
         alert(
           `${name} of ${price} has been added to the cart.`,
@@ -157,6 +157,7 @@ componentWillUnmount() {
         );
        
       } 
+    }
       like(item){
         firebase.database().ref(`data/${item.id-1}`).update({fav: `heart`});
       }

@@ -1,12 +1,29 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,Dimensions } from 'react-native';
 import firebase from 'firebase';
-
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import SignInScreen from './SignInScreen';
+var { width } = Dimensions.get("window")
 class ProfileScreen extends Component{
+    constructor() {
+        super();
+        this.state = { 
+            displayName: firebase.auth().currentUser.displayName,
+        }
+      }
+      signou(){
+        
+         //   firebase.auth().signOut().then(() => {this.props.navigation.navigate('SignIn'); })
+         firebase.auth().signOut()
+      }
+
     render(){
         return (
             <View style={styles.container}>
-                <Text> Welcome to the Profile Screen </Text>
+                <Text style={{fontSize:25, marginTop:10,fontWeight:"bold"}}> {this.state.displayName}'s Profile </Text>
+                <TouchableOpacity style={{backgroundColor:"darkorange",borderRadius:5,marginTop:20}} onPress={()=>this.signou()}>
+           <Text style={{textAlign:"center",color:"white",fontSize:25,fontWeight:"bold",width:width-10}}>Logout</Text>
+        </TouchableOpacity>
             </View>
         
         );
@@ -23,6 +40,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
-      justifyContent: 'center',
+     // justifyContent: 'center',
     },
   });
