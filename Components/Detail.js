@@ -3,13 +3,29 @@ import { View,Text,StyleSheet,ImageBackground,Dimensions,Image,StatusBar,ScrollV
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import firebase from '../database/firebase';
 
+
 export default class Detail extends Component{
   constructor(props) {
     super(props);
     this.state = {
+      Loading: true,
+      data: [],
       count: 0,
-      
+      id1: this.props.navigation.state.params.idData,
+      name1: this.props.navigation.state.params.nameData,
+      image1: this.props.navigation.state.params.imageData,
+      price1: this.props.navigation.state.params.priceData,
+      quantity1: this.props.navigation.state.params.quantityData,
+      rating1: this.props.navigation.state.params.ratingData,
+
     };
+  }
+  componentDidMount(){
+    firebase.database().ref('data').on('value', (snapshot) => {
+      
+      this.setState(()=> ({ data: snapshot.val(), loading: false}));
+      
+    });
   }
   IncrementItem = () => {
     this.setState({ count: this.state.count + 1 });
@@ -19,24 +35,25 @@ export default class Detail extends Component{
     this.setState({ count: this.state.count - 1 });
     
   }
-  addToCart() {
+  addToCart(id,image,name,price,quantity,rating) {
     const user = firebase.auth().currentUser;
     var count1 = this.state.count;
     var i ;
     if (user) {
       for(i=0;i<count1;i++){
-      firebase.database().ref(`cart`)
-        .push();
-      
+      firebase.database().ref(`cart/${user.displayName}`)
+       // .push({id, image, name, price, quantity, rating});
+       .push({id, image, name, price, quantity, rating});
       }
     } 
   }
+  
     render(){
         return(
         <View style={styles.container}>
         <View style={styles.image_container}>
               <Image 
-                source={{uri: this.props.navigation.state.params.imageData}}
+                source={{uri: this.state.image1}}
                 style={styles.image}
               />
               </View>
@@ -73,7 +90,7 @@ export default class Detail extends Component{
       borderRadius:500,
       paddingVertical:3,
       borderColor:'darkorange',
-      backgroundColor:'darkorange'}} onPress={()=>this.addToCart()}>
+      backgroundColor:'darkorange'}} onPress={()=>this.addToCart(this.state.id1,this.state.image1,this.state.name1,this.state.price1,this.state.quantity1,this.state.rating1)}>
               <Text style={{color:'white',fontWeight:'bold'}}>Add to cart</Text>
             </TouchableOpacity>
           </View>

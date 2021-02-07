@@ -45,7 +45,15 @@ var dataCat = [{
 
 renderItem = ({item}) => {
   return(
-    <TouchableOpacity onPress={()=>this.props.navigation.navigate('DetailScreen',{imageData: item.image,priceData: item.price,nameData: item.name})} style={styles.divFood}>
+    <TouchableOpacity onPress={()=>this.props.navigation.navigate('DetailScreen',{
+      imageData: item.image,
+      priceData: item.price,
+      nameData: item.name,
+      idData: item.id,
+      priceData: item.price,
+      quantityData: item.quantity,
+      ratingData: item.rating,
+      })} style={styles.divFood}>
           <TouchableOpacity  style={{alignSelf:'flex-end'}}onPress={() => {if(item.fav == "heart-outline")
           this.like(item)
           else this.unlike(item)
