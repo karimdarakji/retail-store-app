@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Dimensions } from 'react-native';
+import { View, Text, StyleSheet,Dimensions,StatusBar } from 'react-native';
 import firebase from 'firebase';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SignInScreen from './SignInScreen';
@@ -20,8 +20,10 @@ class ProfileScreen extends Component{
     render(){
         return (
             <View style={styles.container}>
+    <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
+
                 <Text style={{fontSize:25, marginTop:10,fontWeight:"bold"}}> {this.state.displayName}'s Profile </Text>
-                <TouchableOpacity style={{backgroundColor:"darkorange",borderRadius:5,marginTop:20}} onPress={()=>this.signou()}>
+                <TouchableOpacity style={{backgroundColor:"darkorange",borderRadius:5,marginTop:20,justifyContent:'center',}} onPress={()=>this.signou()}>
            <Text style={{textAlign:"center",color:"white",fontSize:25,fontWeight:"bold",width:width-10}}>Logout</Text>
         </TouchableOpacity>
             </View>
@@ -40,6 +42,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
-     // justifyContent: 'center',
+      justifyContent: 'center',
     },
   });

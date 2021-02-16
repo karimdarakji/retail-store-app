@@ -130,7 +130,7 @@ export default class Cart extends Component {
           
         </View>
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-          <Text style={{color:"black",fontSize:20, marginTop: 10}}>${item.price*item.count}</Text>
+          <Text style={{color:"black",fontSize:20, marginTop: 10}}>L.L {item.price*item.count}</Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity onPress={()=>this.removeProduct(item)}>
               <Icon name="ios-remove-circle" size={35} color={"darkorange"} />
@@ -157,11 +157,11 @@ export default class Cart extends Component {
       <View style={styles.cartItemsFooter}>
         <View style={{flexDirection:"row"}}>
         <Text style={styles.cartItemsTotalText}>Total: </Text>
-        <Text style={{fontSize:24,textAlign:"right"}}>${this.onTotal()}</Text>
+        <Text style={{fontSize:24,textAlign:"right"}}>L.L {this.onTotal()}</Text>
         </View>
-        <View style={{justifyContent:"flex-end"}}>
-        <TouchableOpacity style={{backgroundColor:"darkorange",borderRadius:5,marginTop:20,}}>
-           <Text style={{textAlign:"center",color:"white",fontSize:25,fontWeight:"bold"}}>Checkout</Text>
+        <View style={{justifyContent:'space-between',marginLeft:'auto',}}>
+        <TouchableOpacity style={{backgroundColor:"darkorange",borderRadius:500,marginTop:20,width:100}} onPress={()=>Alert.alert('order complete!')}>
+           <Text style={{textAlign:"center",color:"white",fontSize:25,fontWeight:"bold"}}>Order</Text>
         </TouchableOpacity>
         </View>
       </View>
@@ -190,7 +190,10 @@ return total;
     }
 
     return (
+      
       <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
+    <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
+
       <View style={{height:45,width:width,alignItems: 'flex-start', justifyContent: 'center', marginLeft:30,borderBottomWidth:1,borderBottomColor:'lightgrey',marginTop:10}} >
       <Text style={{fontSize:25,fontWeight:"bold",color:"black",}}>My Cart</Text>
       </View>

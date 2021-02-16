@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,Text,StyleSheet,ImageBackground,Dimensions,Image,StatusBar,ScrollView,TouchableOpacity} from "react-native";
+import { View,Text,StyleSheet,Dimensions,Image,StatusBar,ScrollView,TouchableOpacity} from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import firebase from '../database/firebase';
 
@@ -44,6 +44,11 @@ export default class Detail extends Component{
       firebase.database().ref(`cart/${user.displayName}`)
        // .push({id, image, name, price, quantity, rating});
        .push({id, image, name, price, quantity, rating});
+       alert(
+        `${this.state.name1} has been added to the cart.`,
+       // ToastAndroid.SHORT,
+       // ToastAndroid.BOTTOM,
+      );
       }
     } 
   }
@@ -51,6 +56,7 @@ export default class Detail extends Component{
     render(){
         return(
         <View style={styles.container}>
+    <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
         <View style={styles.image_container}>
               <Image 
                 source={{uri: this.state.image1}}
@@ -70,7 +76,7 @@ export default class Detail extends Component{
           <Text style={styles.textPrice}></Text>
           <View style={{flexDirection:'row',marginTop:10}}>
           <Text numberOfLines={2} style={styles.textName}>{this.props.navigation.state.params.nameData}</Text>
-          <Text style={{color: 'lightgrey',fontWeight:'bold',fontSize:20,marginTop:25,flex:1,textAlign:'right'}}>${this.props.navigation.state.params.priceData}</Text>
+          <Text style={{color: 'lightgrey',fontWeight:'bold',fontSize:20,marginTop:25,flex:1,textAlign:'right'}}>L.L {this.props.navigation.state.params.priceData}</Text>
           </View>
           <View style={{flexDirection:'row', alignItems:'center',marginTop:15,}}>
             <TouchableOpacity onPress={()=>{this.DecreaseItem()}}>
@@ -90,7 +96,9 @@ export default class Detail extends Component{
       borderRadius:500,
       paddingVertical:3,
       borderColor:'darkorange',
-      backgroundColor:'darkorange'}} onPress={()=>this.addToCart(this.state.id1,this.state.image1,this.state.name1,this.state.price1,this.state.quantity1,this.state.rating1)}>
+      backgroundColor:'darkorange'}} 
+      onPress={()=>{this.addToCart(this.state.id1,this.state.image1,this.state.name1,this.state.price1,this.state.quantity1,this.state.rating1);
+           }}>
               <Text style={{color:'white',fontWeight:'bold'}}>Add to cart</Text>
             </TouchableOpacity>
           </View>

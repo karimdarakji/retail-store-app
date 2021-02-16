@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions,StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';  
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 //import Camera from 'react-native-camera';
@@ -68,6 +68,8 @@ class ServicesScreen extends Component{
     render(){
         return (
             <View style={styles.container}>
+    <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
+
                 <FlatList
                 data={this.state.data}
                 renderItem={this.renderItem}

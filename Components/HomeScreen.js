@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions,Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions,StatusBar,ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from '../database/firebase'
 
@@ -56,7 +56,7 @@ renderItem = ({item}) => {
       })} style={styles.divFood}>
           <TouchableOpacity  style={{alignSelf:'flex-end'}}onPress={() => {if(item.fav == "heart-outline")
           this.like(item)
-          else this.unlike(item)
+         // else this.unlike(item)
           }}>
             <Icon name={item.fav} size={25} color="red"  />
           </TouchableOpacity>
@@ -72,7 +72,7 @@ renderItem = ({item}) => {
               {item.name}
             </Text>
            
-            <Text style={{fontWeight:"bold",fontSize:20, marginBottom: 10}}>${item.price}</Text>
+            <Text style={{fontWeight:"bold",fontSize:20, marginBottom: 10}}>L.L {item.price}</Text>
            
            <TouchableOpacity  style={styles.status} onPress={()=>this.addToCart(item)} >
               <Text style={{fontWeight:"bold", fontSize: 15,color:"white"}}>Add To Cart</Text>
@@ -82,19 +82,7 @@ renderItem = ({item}) => {
 }
 
 componentDidMount() {
-  this._isMounted = true;
-  /*var config = {
-    apiKey: "AIzaSyDjo0MT4w5Qsuy4j6skgGaW8_60BYB9HVU",
-   // authDomain: "**********.firebaseapp.com",
-    databaseURL: "https://retail-app-466b5-default-rtdb.firebaseio.com",
-    projectId: "retail-app-466b5",
-   // storageBucket: "********.appspot.com",
-   // messagingSenderId: "*********"
-  };
-  if (!firebase.apps.length) {
-    firebase.initializeApp(config);
- }*/
-  // firebase.initializeApp(config);   
+  this._isMounted = true; 
   firebase.database().ref('data').on('value', (snapshot) => {
     if (this._isMounted) {
     this.setState(()=> ({ data: snapshot.val(), loading: false}));
@@ -111,6 +99,7 @@ componentWillUnmount() {
              flex: 1, 
              backgroundColor: 'white', 
              }}>
+    <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
                 
                 <ScrollView>
                   
@@ -139,6 +128,7 @@ componentWillUnmount() {
                     )}}/>
                 
            </View>
+           <View style={{marginTop:10, borderTopWidth: 1, borderColor:'lightgrey'}}>
                <Text style={{fontSize: 20, paddingHorizontal: 20, marginTop: 20, fontWeight:"bold"}}>Featured items</Text>   
                
                <FlatList
@@ -148,6 +138,8 @@ componentWillUnmount() {
               renderItem={this.renderItem}
               keyExtractor={(item, index)=>index.toString()}
             />
+            </View>
+
           </ScrollView>
             </View>
         );
@@ -166,11 +158,26 @@ componentWillUnmount() {
        
       } 
     }
-      like(item){
-        firebase.database().ref(`data/${item.id-1}`).update({fav: `heart`});
+      like({id, image, name, price, quantity, rating}){
+        const user = firebase.auth().currentUser;
+  
+      if (user) {
+        
+        firebase.database().ref(`data/${id-1}`).update({fav: `heart`});
+        firebase.database().ref(`fav/${user.displayName}/`).push({id, image, name, price, quantity, rating});
+        ToastAndroid.show('item added to favorites!', ToastAndroid.SHORT);
       }
+    }
       unlike(item){
+        const user = firebase.auth().currentUser;
+
+    if (user) {
+    
+     // firebase.database().ref(`cart/${item.key}`).remove();
+     
         firebase.database().ref(`data/${item.id-1}`).update({fav: `heart-outline`});
+       // firebase.database().ref(`fav/${user.displayName}/${item.key}`).remove();
+      }
       }
   }
     

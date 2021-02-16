@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {StyleSheet,View,Text,Button,Image,Item,Input,Dimensions} from 'react-native';
+import {StatusBar,View,Text,Button,Image,Item,Input,Dimensions, TouchableOpacity,StyleSheet} from 'react-native';
 import {  createAppContainer,createSwitchNavigator } from 'react-navigation';  
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/AntDesign';  
@@ -24,20 +24,32 @@ import SplashScreen from 'react-native-splash-screen';
 import SignInScreen from './Components/SignInScreen';
 import Signup from './Components/Signup';
 import firebase from './database/firebase';
+// { TouchableOpacity } from 'react-native-gesture-handler';
+import SearchScreen from './Components/searchbar';
+import { TextInput } from 'react-native-gesture-handler';
 var { width } = Dimensions.get("window")
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
-      loggedIn: null
-      
+      loggedIn: null,
+      query: '',
+      data: [],
     };
+    
   }
+  //fucntion for search
+  handleSearch = (text) => {
+    console.log("text", text);
+    this.setState({ query: text })
+  }
+  
  // state = { loggedIn: null };
   componentDidMount() {
     SplashScreen.hide();
+    //this.navigation.setParams({ handleSearch: (() => this.handleSearch )});
+    
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ loggedIn: true })
@@ -49,15 +61,19 @@ class App extends Component {
   componentWillUnmount(){
     this.state.loggedIn = null;
   }
+
+  
   
   render() {
-    if(this.state.loggedIn == true)
-    return <AppContainer />
+    if(this.state.loggedIn == true){
+      
+    return <AppContainer /> 
+    }
     else return <SignInScreen/>
     
   }
 }
-export default App;
+
 
 class LogoTitle extends React.Component {
   render() {
@@ -69,7 +85,6 @@ class LogoTitle extends React.Component {
     );
   }
 }
-
 
 const DashboardTabNavigator = createBottomTabNavigator({  
   Home: {
@@ -179,6 +194,12 @@ const DashboardStackNavigator = createStackNavigator(
       headerShown: false,
   }
   },
+  searchbar: {
+    screen: SearchScreen,
+    navigationOptions: {
+      headerShown: false,
+  }
+},
   
   
   
@@ -188,6 +209,7 @@ const DashboardStackNavigator = createStackNavigator(
 }, */
 {
   defaultNavigationOptions: ({navigation})=> {
+    
     return {
       
       
@@ -198,21 +220,31 @@ const DashboardStackNavigator = createStackNavigator(
       },
       headerLeft: () => <View style={{marginLeft: 10}}><LogoTitle/></View>,
       headerTitle: () => (
-      
-        //<Icon name="search1" color='white' size={25} style={{marginRight: 10}}/>
+        <TouchableOpacity onPress={()=>navigation.navigate('searchbar')}>
+        <View style={styles.search}>
+        <Icon name="search1" color='grey' size={20} style={{marginRight: 10,margin:3}} />
+<Text style={{color:'lightgrey', margin:3}}>
+  search for products
+</Text>
+        </View>
         
-        <SearchBar
-        inputStyle={{backgroundColor: 'white', marginTop: 7}}
-    containerStyle={{backgroundColor: 'transparent', borderBottomColor:'transparent', borderTopColor: 'transparent', }}
+        </TouchableOpacity>
+       /* <TouchableOpacity onPress={()=>this.props.navigation.navigate('SearchScreen')}>
+        <TextInput
+      <Icon name="search1" color='white' size={25} style={{marginRight: 10}} />
+       // inputStyle={{backgroundColor: 'white', marginTop: 7}}
+       // containerStyle={{backgroundColor: 'transparent', borderBottomColor:'transparent', borderTopColor: 'transparent', }}
    // placeholderTextColor={'#g5g5g5'}
-        round
-        searchIcon={{ size: 24 }}
-        placeholder="Search..."
-        inputContainerStyle={{backgroundColor: 'white', height: 35,}}
+       // round
+       // searchIcon={{ size: 24 }}
+        placeholder="Search for products"
+       // inputContainerStyle={{backgroundColor: 'white', height: 35,}}
+        //value={navigation.getParam('query')}
         
         
       />
-      
+    </TouchableOpacity>
+      */
       ), 
       
           
@@ -222,15 +254,21 @@ const DashboardStackNavigator = createStackNavigator(
 
 );
 
-/*const appswitch = createSwitchNavigator({
-  route1: { screen: SignInScreen},
-  route2: { screen: DashboardStackNavigator},
- // route3: DashboardStackNavigator,
-},
-{
-  initialRouteName: "route1"
-})
-const AppContainer = createAppContainer(appswitch);*/
+
+
 const AppContainer = createAppContainer(DashboardStackNavigator);
-//export default createAppContainer(AppSwitchNavigator);  
+
+const styles = StyleSheet.create({
+  search: {
+    height: 30,
+    borderRadius:10,
+    flexDirection:'row',
+    borderWidth:1,
+    borderColor:'lightgrey',
+    backgroundColor: '#fff',
+    
+    
+  },
+});
+
 
