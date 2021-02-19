@@ -111,14 +111,18 @@ componentWillUnmount() {
                   SHOP BY CATEGORY
                   </Text>
                   <FlatList
-                  horizontal data={this.state.dataCat}
+                 
+                  horizontal 
+                  data={this.state.dataCat}
                  showsHorizontalScrollIndicator={false}
                   keyExtractor={(item, index)=>index.toString()}
                   renderItem={({ item }) =>{      
                     return (
                       <View style={{paddingTop: 10}}
                       >
-                      <TouchableOpacity onPress={()=>{}}>
+                      <TouchableOpacity onPress={()=>{this.props.navigation.navigate('category',{
+                        catname: item.name
+                      })}}>
                       <Image source={item.image} style={styles.ImageIconStyle} />
                       
                         <Text style={{textAlign: 'center'}}>{item.name}</Text>
@@ -132,11 +136,16 @@ componentWillUnmount() {
                <Text style={{fontSize: 20, paddingHorizontal: 20, marginTop: 20, fontWeight:"bold"}}>Featured items</Text>   
                
                <FlatList
-              //horizontal={true}     
+               // initialNumToRender = {1}
+              //horizontal={true}    
+            //  removeClippedSubviews = {true} 
+             // maxToRenderPerBatch={20}
+            //  initialNumToRender={2}
               data={this.state.data}
               numColumns={2}
               renderItem={this.renderItem}
-              keyExtractor={(item, index)=>index.toString()}
+             // keyExtractor={(item, index)=>index.toString()}
+             keyExtractor={item => item.id.toString()}
             />
             </View>
 
@@ -144,6 +153,7 @@ componentWillUnmount() {
             </View>
         );
     }
+    
     addToCart({ id, image, name, price, quantity, rating }) {
       const user = firebase.auth().currentUser;
   
@@ -194,7 +204,7 @@ const styles = StyleSheet.create({
       height: 80,
       width: 80,
       resizeMode: 'stretch',
-      borderRadius: 80
+      borderRadius: 50
     },
     button: {
       marginTop: 20,

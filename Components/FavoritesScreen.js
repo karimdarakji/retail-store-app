@@ -15,8 +15,12 @@ class FavoritesScreen extends Component{
         };
       }
       componentDidMount() {
+        this._isMounted = true;
         this.getfavorites();
       }
+      componentWillUnmount() {
+        this._isMounted = false
+    }
       getfavorites(){
         const user = firebase.auth().currentUser;
 
@@ -42,11 +46,12 @@ class FavoritesScreen extends Component{
               dupIndex = 0;
             });
           }
-
+if(this._isMounted){
           this.setState(
             () => ({ data, loading: false }),
            
           );
+}
         });
    
     }
@@ -77,7 +82,7 @@ class FavoritesScreen extends Component{
                 
                 <Text style={{paddingHorizontal:8, fontWeight:'bold', fontSize:18}}>{item.count}</Text>
                 <TouchableOpacity onPress={()=>this.removeProduct(item)}>
-                  <Icon name="close-circle" size={35} color={"red"} />
+                  <Icon name="trash-outline" size={25} color={"red"} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -101,8 +106,15 @@ class FavoritesScreen extends Component{
       }
     render(){
         return (
-            <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{flex:1,alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>
     <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
+
+    <View style={{height:45,width:width,alignItems: 'flex-start', justifyContent: 'center', marginLeft:30,borderBottomWidth:1,borderBottomColor:'lightgrey',marginTop:10}} >
+      <Text style={{fontSize:25,fontWeight:"bold",color:"black",}}>My Favorites</Text>
+      </View>
+      <View style={{height:10}} />
+      <View style={{flex:1,marginTop:10}}>
+        
     {this.state.data.length >0 ?
     <FlatList
             data={this.state.data}
@@ -116,6 +128,8 @@ class FavoritesScreen extends Component{
        }
             </View>
         
+      </View>
+      
         );
     }
 }
@@ -131,5 +145,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor:'white'
     },
   });

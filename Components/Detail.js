@@ -3,6 +3,7 @@ import { View,Text,StyleSheet,Dimensions,Image,StatusBar,ScrollView,TouchableOpa
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import firebase from '../database/firebase';
 
+var { width } = Dimensions.get("window")
 
 export default class Detail extends Component{
   constructor(props) {
@@ -21,12 +22,16 @@ export default class Detail extends Component{
     };
   }
   componentDidMount(){
+    this._isMounted = true;
     firebase.database().ref('data').on('value', (snapshot) => {
-      
+      if(this._isMounted){
       this.setState(()=> ({ data: snapshot.val(), loading: false}));
-      
+      }
     });
   }
+  componentWillUnmount() {
+    this._isMounted = false
+}
   IncrementItem = () => {
     this.setState({ count: this.state.count + 1 });
   }
@@ -74,7 +79,8 @@ export default class Detail extends Component{
           <ScrollView style={styles.footer}>
           
           <Text style={styles.textPrice}></Text>
-          <View style={{flexDirection:'row',marginTop:10}}>
+          <View style={{//flexDirection:'row',
+          marginTop:10}}>
           <Text numberOfLines={2} style={styles.textName}>{this.props.navigation.state.params.nameData}</Text>
           <Text style={{color: 'lightgrey',fontWeight:'bold',fontSize:20,marginTop:25,flex:1,textAlign:'right'}}>L.L {this.props.navigation.state.params.priceData}</Text>
           </View>
@@ -120,18 +126,21 @@ var styles = StyleSheet.create({
     },
     
     footer: {
-      flex:1,
+     // flex:1,
       paddingHorizontal:40
     },
     image_container: {
-      width: height_image,
-      height: height_image,
+     // width: height_image,
+     // height: height_image,
+     height: 180,
+     width: width,
       marginTop: height_image/3,
-      
+     resizeMode:'stretch'
     },
     image: {
-      width:'200%',
+      //width:'200%',
       height:'150%',
+      width: width-50,
       borderWidth:1,
       borderRadius:7,
       borderColor:'lightgrey',

@@ -10,7 +10,6 @@ import React, {Component} from 'react';
 import {StatusBar,View,Text,Button,Image,Item,Input,Dimensions, TouchableOpacity,StyleSheet} from 'react-native';
 import {  createAppContainer,createSwitchNavigator } from 'react-navigation';  
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import Icon from 'react-native-vector-icons/AntDesign';  
 import HomeScreen from './Components/HomeScreen';
 import ServicesScreen from './Components/ServicesScreen';
 import FavoritesScreen from './Components/FavoritesScreen';
@@ -24,9 +23,9 @@ import SplashScreen from 'react-native-splash-screen';
 import SignInScreen from './Components/SignInScreen';
 import Signup from './Components/Signup';
 import firebase from './database/firebase';
-// { TouchableOpacity } from 'react-native-gesture-handler';
 import SearchScreen from './Components/searchbar';
-import { TextInput } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons'; 
+import CategoriesScreen from './Components/Categoriespage';
 var { width } = Dimensions.get("window")
 
 export default class App extends Component {
@@ -93,7 +92,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
       
       tabBarLabel:'Home',
       tabBarIcon:({tintColor})=>(
-        <Icon name="home" color={tintColor} size=
+        <Icon name="home-outline" color={tintColor} size=
         {25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
@@ -106,7 +105,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
     navigationOptions:{
       tabBarLabel:'Services',
       tabBarIcon:({tintColor})=>(
-        <Icon name="paperclip" color={tintColor} size={25}/>
+        <Icon name="settings-outline" color={tintColor} size={25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
     }
@@ -116,7 +115,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
     navigationOptions:{
       tabBarLabel:'Favorites',
       tabBarIcon:({tintColor})=>(
-        <Icon name="star" color={tintColor} size={25}/>
+        <Icon name="heart-circle" color={tintColor} size={25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
     }
@@ -127,7 +126,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
       
       tabBarLabel:'Cart',
       tabBarIcon:({tintColor})=>(
-        <Icon name="shoppingcart" color={tintColor} size={25}/>
+        <Icon name="basket-outline" color={tintColor} size={25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
       header: null,
@@ -138,7 +137,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
     navigationOptions:{
       tabBarLabel:'Profile',
       tabBarIcon:({tintColor})=>(
-        <Icon name="user" color={tintColor} size={25}/>
+        <Icon name="person-outline" color={tintColor} size={25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
     }
@@ -200,7 +199,12 @@ const DashboardStackNavigator = createStackNavigator(
       headerShown: false,
   }
 },
-  
+category: {
+  screen: CategoriesScreen,
+  navigationOptions: {
+    headerShown: false,
+},
+}
   
   
 },
@@ -222,7 +226,7 @@ const DashboardStackNavigator = createStackNavigator(
       headerTitle: () => (
         <TouchableOpacity onPress={()=>navigation.navigate('searchbar')}>
         <View style={styles.search}>
-        <Icon name="search1" color='grey' size={20} style={{marginRight: 10,margin:3}} />
+        <Icon name="search-outline" color='grey' size={20} style={{marginRight: 10,margin:3}} />
 <Text style={{color:'lightgrey', margin:3}}>
   search for products
 </Text>

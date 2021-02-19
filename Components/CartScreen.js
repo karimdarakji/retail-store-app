@@ -18,13 +18,14 @@ export default class Cart extends Component {
   }
  
   componentDidMount() {
-    
-   // const user = firebase.auth().currentUser;
-
-   // if (user) {
+    this._isMounted = true;
     this.getProductsInCart();
- // }
+ 
 }
+componentWillUnmount() {
+  this._isMounted = false;
+}
+
   addToCart({ id, image, name, price, quantity, rating }) {
     const user = firebase.auth().currentUser;
 
@@ -72,11 +73,12 @@ export default class Cart extends Component {
               dupIndex = 0;
             });
           }
-
+if(this._isMounted){
           this.setState(
             () => ({ data, loading: false }),
            // () => this.calculateTotal(),
           );
+          }
         });
    
     }
@@ -191,7 +193,7 @@ return total;
 
     return (
       
-      <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{flex:1,alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>
     <StatusBar backgroundColor='darkorange' barStyle="light-content"/>
 
       <View style={{height:45,width:width,alignItems: 'flex-start', justifyContent: 'center', marginLeft:30,borderBottomWidth:1,borderBottomColor:'lightgrey',marginTop:10}} >
