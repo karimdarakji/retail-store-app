@@ -48,7 +48,15 @@ export default class SearchScreen extends Component{
     }
     renderItem = ({item}) =>{
 return (
-  <TouchableOpacity onPress={() => alert('Item pressed!')}>
+  <TouchableOpacity onPress={() => {this.props.navigation.navigate('DetailScreen',{
+    imageData: item.image,
+    priceData: item.price,
+    nameData: item.name,
+    idData: item.id,
+    priceData: item.price,
+    quantityData: item.quantity,
+    ratingData: item.rating,
+  })}}>
   <View
     style={{
       flexDirection: 'row',

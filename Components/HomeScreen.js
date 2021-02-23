@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions,StatusBar,ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import firebase from '../database/firebase'
-import Swiper from 'react-native-swiper'
+import firebase from '../database/firebase';
+import Swiper from 'react-native-swiper';
 
 
 var {height, width } = Dimensions.get('window');

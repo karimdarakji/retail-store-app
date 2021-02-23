@@ -25,7 +25,7 @@ class ServicesScreen extends Component{
         }
     }
     renderItem = ({item}) => {
-      if(item.icon == 'barcode'){
+      if(item.icon == 'barcode-outline'){
         return(
           <TouchableOpacity style={styles.item} onPress={()=>this.props.navigation.navigate('BarcodeScreen')}>
               <Icon name="barcode" size={45} color="darkorange"

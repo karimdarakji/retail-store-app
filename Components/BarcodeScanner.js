@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Text, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import firebase from '../database/firebase'
 
+var i;
 class ProductScanRNCamera extends Component {
 
   constructor(props) {
@@ -10,21 +12,47 @@ class ProductScanRNCamera extends Component {
     this.barcodeCodes = [];
 
     this.state = {
+      isLoading: true,
+      data: [],
       camera: {
         type: RNCamera.Constants.Type.back,
 	flashMode: RNCamera.Constants.FlashMode.auto,
       }
     };
   }
+  componentDidMount() {
+    
+    firebase.database().ref('data').on('value', (snapshot) => {
+      
+      this.setState(()=> ({ data: snapshot.val(), loading: false}));
+      
+    });
+  }
 
   onBarCodeRead(scanResult) {
-    console.warn(scanResult.type);
-    console.warn(scanResult.data);
-    if (scanResult.data != null) {
+    //console.warn(scanResult.type);
+    //console.log(this.state.data[0].barcode)
+    console.log(scanResult.data);
+    /*if (scanResult.data != null) {
 	if (!this.barcodeCodes.includes(scanResult.data)) {
 	  this.barcodeCodes.push(scanResult.data);
 	  console.warn('onBarCodeRead call');
 	}
+    }*/
+    for(i = 0;i<this.state.data.length;i++){
+if(scanResult.data == this.state.data[i].barcode){
+  console.log('success');
+  this.props.navigation.navigate('DetailScreen',{
+    imageData: this.state.data[i].image,
+    priceData: this.state.data[i].price,
+    nameData: this.state.data[i].name,
+    idData: this.state.data[i].id,
+    priceData: this.state.data[i].price,
+    quantityData: this.state.data[i].quantity,
+    ratingData: this.state.data[i].rating,
+    })
+}
+
     }
     return;
   }
