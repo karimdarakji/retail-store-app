@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, Image, Dimensions,StatusBar,ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from '../database/firebase'
+import Swiper from 'react-native-swiper'
 
 
 var {height, width } = Dimensions.get('window');
@@ -104,10 +105,18 @@ componentWillUnmount() {
                 <ScrollView>
                   
                   <View style={{alignItems:'center', paddingTop: 10}}>
-                <Image source = {require('../img/charcutier.png')} style={{resizeMode:'contain',height:180,width:width, }} />
+                  <Swiper style={{height:width/2,}} 
+                   showsButtons={false} autoplay={true} autoplayTimeout={10} activeDotColor={'white'} >
+
+                  <Image source = {require('../img/images.png')} style={{resizeMode:'contain',height:width/2,width:width-40, alignSelf:'center', borderRadius: 5}} />
+                  <Image source = {require('../img/images2.jpg')} style={{resizeMode:'contain',height:width/2,width:width-40, alignSelf:'center', borderRadius: 10}} />
+
+               
+                <Image source = {require('../img/charcutier.png')} style={{resizeMode:'contain',height:width/2,width:width-40, alignSelf:'center', borderRadius: 10 }} />
+               </Swiper>
                 </View>
-                <View style={{marginTop:10, borderTopWidth: 1, borderColor:'lightgrey'}}>
-                <Text style={{ fontSize: 20, fontWeight: 'normal', paddingHorizontal: 20, marginTop: 15, textAlign: 'center', color:'black'}}>
+                <View style={{marginTop:10, borderColor:'lightgrey'}}>
+                <Text style={{ fontSize: 20, fontWeight: 'normal', paddingHorizontal: 20, marginTop: 10, textAlign: 'center', color:'black'}}>
                   SHOP BY CATEGORY
                   </Text>
                   <FlatList

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Alert, Dimensions,StatusBar } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';  
+import Icon from 'react-native-vector-icons/Ionicons';  
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 //import Camera from 'react-native-camera';
 var { width } = Dimensions.get("window")
@@ -11,15 +11,15 @@ class ServicesScreen extends Component{
             data: [
                 {
                     name: 'Privilege Card',
-                     icon: 'idcard'
+                     icon: 'card-outline'
                 },
                 {
                     name: 'Barcode Scanner',
-                    icon: 'barcode'
+                    icon: 'barcode-outline'
                 },
                 {
                     name: 'Store Finder',
-                    icon: 'find'
+                    icon: 'location-outline'
                 },
             ]
         }

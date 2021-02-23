@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,FlatList, SearchBar,Dimensions,TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet,FlatList, SearchBar,Dimensions,TouchableOpacity, TextInput } from 'react-native';
 import firebase from '../database/firebase';
 import filter from 'lodash.filter'
 var { width } = Dimensions.get("window")
@@ -12,15 +11,22 @@ export default class SearchScreen extends Component{
           loading: false,
           query:"",
           fulldata: [],
+          filtereddata: [],
           error: null,
         };
     }
     handleSearch = text => {
-       const formattedQuery = text.toLowerCase();
-       const data = filter(this.state.fulldata, user => {
-           return this.contains(user, formattedQuery);
+       const formattedQuery = text// = text.toUpperCase();
+       
+       const data = filter(this.state.fulldata, items => {
+           return this.contains(items, formattedQuery);
        });
-        this.setState({data, query: text });
+       
+        this.setState({
+          //fulldata: data, 
+          filtereddata: data,
+          query: text
+         });
     };
     contains = ( {name} , query) => {
         
@@ -34,7 +40,7 @@ export default class SearchScreen extends Component{
     }
     makeRemoteRequest = () => {
       firebase.database().ref('data').on('value', (snapshot) => {
-        this.setState(()=> ({ fulldata: snapshot.val(), loading: false}));
+        this.setState(()=> ({ fulldata: snapshot.val(), loading: false, filtereddata: snapshot.val()}));
         
       }, error => {
         console.error(error);
@@ -59,6 +65,7 @@ return (
 </TouchableOpacity>
 )
     }
+    
    
     render(){
         return (
@@ -70,14 +77,16 @@ return (
            // onChangeText={text => this.searchFilterFunction(text)}
            onChangeText={this.handleSearch}
             autoCorrect={false}
-           // value={this.state.value}
+            clearButtonMode={'always'}
+           // value={this.state.query}
           />
                 <FlatList
               //horizontal={true}     
-              data={this.state.fulldata}
+              //data={this.state.fulldata}
+              data = {this.state.filtereddata}
               //numColumns={2}
               renderItem={this.renderItem}
-              keyExtractor={(item, index)=>index.toString()}
+              keyExtractor={item =>item.name}
             />
             </View>
         

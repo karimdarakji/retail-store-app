@@ -105,7 +105,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
     navigationOptions:{
       tabBarLabel:'Services',
       tabBarIcon:({tintColor})=>(
-        <Icon name="settings-outline" color={tintColor} size={25}/>
+        <Icon name="attach-outline" color={tintColor} size={25}/>
       ),
       tabBarOptions: {activeTintColor:'darkorange'},
     }

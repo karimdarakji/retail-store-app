@@ -60,3 +60,5 @@ buck-out/
 
 # api keys
 .env 
+
+database/
