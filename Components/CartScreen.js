@@ -94,6 +94,16 @@ if(this._isMounted){
      firebase.database().ref(`cart/${user.displayName}/${item.key}`).remove();
     }
   }
+  clearCart() {
+    
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+    
+     // firebase.database().ref(`cart/${item.key}`).remove();
+     firebase.database().ref(`cart/${user.displayName}/`).remove();
+    }
+  }
 
   showAlert(title, message) {
     Alert.alert(
